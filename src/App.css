@@ -71,7 +71,7 @@
 
 .card {
   width: 10rem !important;
-  margin: 0;
+  margin: auto;
   margin-top: 10px;
 }
 
@@ -83,4 +83,9 @@
 
 .card-img-top {
   width: 25%;
+  margin: auto;
+}
+
+.card-text {
+  margin: 0;
 }

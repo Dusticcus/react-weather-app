@@ -91,21 +91,34 @@ function App() {
             </Button>
           </Row>
           <Row>
-            {forecastTemps.map((temperature) => <Card style={{ width: '18rem' }}>
-              <Card.Img variant="top" src={`http://openweathermap.org/img/w/${temperature.weather[0].icon}.png`} />
-              <Card.Body>
-                <Card.Title>5 Day Forecast</Card.Title>
-                <Card.Text>
-                  {Math.floor(temperature.temp.day)}&#x2109;
-                </Card.Text>
-              </Card.Body>
-            </Card>
+            {forecastTemps.slice(0, 5).map((temperature) => {
+              let epochToDate = parseInt(temperature.dt);
+              console.log(epochToDate);
+              let date = new Date(epochToDate * 1000).toDateString();
+              return (
+                <Card style={{ width: '18rem' }}>
+                  <Card.Img variant="top" src={`http://openweathermap.org/img/w/${temperature.weather[0].icon}.png`} />
+                  <Card.Body>
+                    <Card.Title>{date.toString()}</Card.Title>
+                    <Card.Text>
+                      <b>Day</b>: {Math.floor(temperature.temp.day)}&#x2109;
+                    </Card.Text>
+                    <Card.Text>
+                      <b>High</b>: {Math.floor(temperature.temp.max)}&#x2109;
+                    </Card.Text>
+                    <Card.Text>
+                      <b>Low</b>: {Math.floor(temperature.temp.min)}&#x2109;
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              )
+            }
             )}
 
           </Row>
         </Container>
       </header>
-    </div>
+    </div >
   );
 }
 
