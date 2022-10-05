@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import Table from 'react-bootstrap/Table';
 
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -94,20 +95,36 @@ function App() {
             {forecastTemps.slice(0, 5).map((temperature) => {
               let epochToDate = parseInt(temperature.dt);
               console.log(epochToDate);
-              let date = new Date(epochToDate * 1000).toDateString();
+              let date = new Date(epochToDate * 1000).toLocaleString(undefined, {
+               weekday: "short", month: "short", day: "numeric"
+              })
               return (
                 <Card style={{ width: '18rem' }}>
                   <Card.Img variant="top" src={`http://openweathermap.org/img/w/${temperature.weather[0].icon}.png`} />
                   <Card.Body>
                     <Card.Title>{date.toString()}</Card.Title>
                     <Card.Text>
-                      <b>Day</b>: {Math.floor(temperature.temp.day)}&#x2109;
-                    </Card.Text>
-                    <Card.Text>
+                      <Table>
+                        <thead>
+                          <tr>
+                            <th>Day</th>
+                            <th>High</th>
+                            <th>Low</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{Math.floor(temperature.temp.day)}&#x2109;</td>
+                            <td>{Math.floor(temperature.temp.max)}&#x2109;</td>
+                            <td>{Math.floor(temperature.temp.min)}&#x2109;</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                      {/* <b>Day</b>: {Math.floor(temperature.temp.day)}&#x2109;
+
                       <b>High</b>: {Math.floor(temperature.temp.max)}&#x2109;
-                    </Card.Text>
-                    <Card.Text>
-                      <b>Low</b>: {Math.floor(temperature.temp.min)}&#x2109;
+
+                      <b>Low</b>: {Math.floor(temperature.temp.min)}&#x2109; */}
                     </Card.Text>
                   </Card.Body>
                 </Card>
