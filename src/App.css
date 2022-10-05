@@ -68,3 +68,19 @@
   width: 25%;
   margin: auto;
 }
+
+.card {
+  width: 10rem !important;
+  margin: 0;
+  margin-top: 10px;
+}
+
+.card,
+.card-title {
+  color: black;
+  font-size: 15px;
+}
+
+.card-img-top {
+  width: 25%;
+}

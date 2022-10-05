@@ -2,7 +2,8 @@ import './App.css';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Navbar from 'react-bootstrap/Navbar';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -18,7 +19,8 @@ function App() {
   const [temp, setTemp] = useState(null);
   const [changeCity, setChangeCity] = useState('');
 
-  const [forecast, setForcecast] = useState([]);
+  const [forecast, setForecast] = useState(null);
+  const [forecastTemps, setForecastTemps] = useState([])
 
   const handleChange = event => {
     setChangeCity(event.target.value);
@@ -47,11 +49,23 @@ function App() {
     axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${defaultCity}&cnt=7&appid=89d53e26dcb182abf23165adbc6cc1e9&units=${unitOfMeasurment}`)
       .then(function (response) {
         // handle success
-        console.log(Math.floor(response.data.list[1].temp.day));
-        setForcecast();
+        setForecast(response.data.list);
+
       });
+
   }, [defaultCity]);
 
+  useEffect(() => {
+    if (forecast) {
+      let newArray = [];
+      for (let i = 0; i <= 6; i++) {
+        console.log(forecast[i])
+        newArray.push(forecast[i]);
+        setForecastTemps(newArray)
+      }
+    }
+
+  }, [forecast]);
 
   return (
     <div className="App">
@@ -75,6 +89,19 @@ function App() {
             <Button variant="outline-primary" className='searchButton' onClick={handleClick}>
               Change City
             </Button>
+          </Row>
+          <Row>
+            {forecastTemps.map((temperature) => <Card style={{ width: '18rem' }}>
+              <Card.Img variant="top" src={`http://openweathermap.org/img/w/${temperature.weather[0].icon}.png`} />
+              <Card.Body>
+                <Card.Title>5 Day Forecast</Card.Title>
+                <Card.Text>
+                  {Math.floor(temperature.temp.day)}&#x2109;
+                </Card.Text>
+              </Card.Body>
+            </Card>
+            )}
+
           </Row>
         </Container>
       </header>
