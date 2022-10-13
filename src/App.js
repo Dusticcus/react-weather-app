@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
+import env from "react-dotenv";
 
 import React, { useState, useEffect, useRef } from 'react';
 
@@ -38,7 +39,7 @@ function App() {
 
   useEffect(() => {
     console.log("use effect fired");
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${defaultCity}&appid=89d53e26dcb182abf23165adbc6cc1e9&units=${unitOfMeasurment}`)
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${defaultCity}&${env.API_ID}&units=${unitOfMeasurment}`)
       .then(function (response) {
         // handle success
         console.log(response.data)
@@ -47,11 +48,10 @@ function App() {
         setWeatherIcon(`http://openweathermap.org/img/w/` + response.data.weather[0].icon + `.png`);
         setWeather(response.data.weather[0].main);
       });
-    axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${defaultCity}&cnt=7&appid=89d53e26dcb182abf23165adbc6cc1e9&units=${unitOfMeasurment}`)
+    axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?q=${defaultCity}&cnt=7&${env.API_ID}&units=${unitOfMeasurment}`)
       .then(function (response) {
         // handle success
         setForecast(response.data.list);
-
       });
 
   }, [defaultCity]);
@@ -96,7 +96,7 @@ function App() {
               let epochToDate = parseInt(temperature.dt);
               console.log(epochToDate);
               let date = new Date(epochToDate * 1000).toLocaleString(undefined, {
-               weekday: "short", month: "short", day: "numeric"
+                weekday: "short", month: "short", day: "numeric"
               })
               return (
                 <Card style={{ width: '18rem' }}>
@@ -120,11 +120,6 @@ function App() {
                           </tr>
                         </tbody>
                       </Table>
-                      {/* <b>Day</b>: {Math.floor(temperature.temp.day)}&#x2109;
-
-                      <b>High</b>: {Math.floor(temperature.temp.max)}&#x2109;
-
-                      <b>Low</b>: {Math.floor(temperature.temp.min)}&#x2109; */}
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -135,7 +130,7 @@ function App() {
           </Row>
         </Container>
       </header>
-    </div >
+    </div>
   );
 }
 
